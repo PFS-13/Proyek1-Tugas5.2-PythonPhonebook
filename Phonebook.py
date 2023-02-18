@@ -1,181 +1,167 @@
 import os
-
-#DEFINE A MENU FUNCTION
-def menu():
-    #ENTRY VARIABLE
-    entry = int(input("""Selamat datang di Buku Kontak Raizenway.
-    Silahkan pilih opsi...
-    1. Display kontak saat ini
-    2. Tambah kontak baru
-    3. Cek nomor                            
-    4. Hapus nomor
-    5. Update nomor
-    6. Exit 
-    Masukkan opsi... """))
-    return entry
-
-#DEFINE A FUNCTION PHONEBOOK
-def phonebook():
-
-    #inisiasi perulangan while untuk menjalankan program phonebook secara berkelanjutan
+def isNameExist(nama) :
+    read = open("Phone.txt", "r")
     while True:
-        #panggil menu
-        #set variabel entri dengan function menu
-        os.system('cls')
-        entry = menu()
-
-        #LIST KONTAK
-        if entry == 1:
-        # untuk entri pertama, cek apakah buku kontak kosong
-        # jika kosong, maka print kontak list
-            with open("Kontak.txt", "r") as file:
-                lines = file.readlines()
-
-            if len(lines) > 0:
-                # baca file
-                with open("Kontak.txt", "r") as file:
-                    print(file.read())
-                input("Tekan enter untuk kembali ke menu... ")
-                # jika tidak, informasikan pengguna bahwa kontak kosong
-            else:
-                print("Kontak kamu kosong nih :( Yuk tambah kontak baru dulu!")
-
-        #TAMBAH KONTAK
-        elif entry == 2:
-            #minta input nomor dan nama kontak
-            file = open("Kontak.txt", "r")
-            phone_number = input('Silahkan masukkan nomor ')
-            contact_name = input('Silahkan masukkan nama kontak: ')
-            #cek apakah nomor kontak sudah tersedia
-            #jika tidak, maka update list kontak terkini
-            lines = file.readlines()
-            found = False
-            #cek
-
-            for line in lines:
-                if line.find(contact_name) != -1:
-                    print('Nomor sudah ada di dalam buku kontak!')
-                    found = True
-                    input("Tekan enter untuk kembali ke menu... ")                    
-            if not found:
-                with open("Kontak.txt", "a") as file:
-                    file.write(contact_name)
-                    file.write('\n')
-                    file.write(phone_number)
-                    file.write('\n\n')
-                    #tampilkan pesan berhasil
-                    print('Kontak berhasil disimpan')
-                    input("Tekan enter untuk kembali ke menu... ")
-                
-            file.close()
-
-        #CEK NOMOR
-        elif entry == 3:
-            file = open("Kontak.txt", "r")
-            lines = file.readlines()
-            #inisiasi nama variabel
-            name = input('Masukkan nama/nomor kontak yang ingin anda lihat: ')
-            found = False
-            #cek
-            for line in lines:
-                if line.find(name) != -1:
-                    if name[0]=='0' or name[0]=='6'or name[0]=='+':
-                        index = lines.index(line)
-                        print(lines[index-1], lines[index], sep='')
-                        found = True
-                        input("Tekan enter untuk kembali ke menu... ")
-                    else:
-                        index = lines.index(line)
-                        print(lines[index], lines[index+1], sep='')
-                        found = True
-                        input("Tekan enter untuk kembali ke menu... ")
-                    
-            if not found:
-                print('Kontak tidak ada')
-                input("Tekan enter untuk kembali ke menu... ")                  
-
-        #OPSI MENGHAPUS
-        elif entry == 4:
-            with open('Kontak.txt', 'r') as fr:
-                # reading line by line
-                lines = fr.readlines()
-                found = False
-                # pointer for position
-                name = input('Masukkan nama kontak yang ingin anda hapus: ')
-                for line in lines:
-                    if line.find(name) != -1:
-                        found = True
-                        konfirmasi = input('Apakah kamu yakin untuk menghapus kontak ini? Ya/Tidak\n')
-                        if konfirmasi == 'Ya':
-                            # opening in writing mode
-                            with open('Kontak.txt', 'w') as fw:
-                                #cari cek poin
-                                for line in lines:
-                                    if line.find(name) != -1:
-                                        nomordihapus = lines.index(line)
-
-                                for line in lines:
-                                # we want to remove name line
-                                    if line.strip('\n') != name:
-                                        if line != lines[nomordihapus+1]:
-                                            if lines.index(line) != nomordihapus:
-                                                fw.write(line)
-                            print("Deleted")
-                        
-            if not found:
-                print("Kontak tidak ada")
-
-            input("Tekan enter untuk kembali ke menu... ") 
-
-        #UPDATE
-        elif entry == 5:
-            file = open("Kontak.txt", "r")
-            lines = file.readlines()
-            #inisiasi nama variabel
-            opsi = input('Ingin update nama atau nomor kontak?\n1. Nama\n2. Nomor\n')
-            found = False
-            #cek
-            if opsi == '1':
-                name = input('Masukkan nama kontak :')
-                for line in lines: 
-                    if line.find(name) != -1:
-                        index = lines.index(line)
-                        found = True
-                        namabaru = input('Silahkan masukkan nama baru: ')
-                        lines[index] = namabaru+('\n')
-                        with open("Kontak.txt", "w") as file:
-                            file.writelines(lines)
-                        print('Nama berhasil di perbarui')
-                        input("Tekan enter untuk kembali ke menu... ")
-
-                if not found:
-                        print('Kontak tidak ada')
-                        input("Tekan enter untuk kembali ke menu... ")
-
-            elif opsi == '2':
-                nomor = input('Masukkan nomor kontak :')
-                for line in lines:
-                    if line.find(nomor) != -1:
-                        index = lines.index(line)
-                        found = True
-                        nomorbaru = input('Silahkan masukkan nomor baru: ')
-                        lines[index] = nomorbaru+('\n')
-                        with open("Kontak.txt", "w") as file:
-                            file.writelines(lines)
-                        print('Nomor berhasil di perbarui')
-                        input("Tekan enter untuk kembali ke menu... ")
-                if not found:
-                    print('Kontak tidak ada')
-                    input("Tekan enter untuk kembali ke menu... ")
-
-        elif entry == 6:
-            print('Terima kasih telah menggunakan Buku Kontak Raizenway')
+        line = read.readline()
+        if not line:
             break
+        elif line.find(",") == -1 :
+            continue
+        koma = line.index(",")
+        name = line[:koma]
+        if name == nama :
+            read.close()
+            return True
+    read.close()
+    return False
 
-        #Error
-        else:
-            print('Opsi salah!')
+def isNumberExist(no) :
+    read = open("Phone.txt", "r")
+    while True:
+        line = read.readline()
+        if not line:
+            break
+        elif line.find(",") == -1 :
+            continue
+        koma = line.index(",")
+        Nomor = line[koma + 1:]
+        if no == Nomor :
+            read.close()
+            return True
+    read.close()
+    return False
 
-        #end
+def getContact(nama) :
+    read = open("Phone.txt", "r")
+    lin = 0
+    data = {"Nama":"","NO":"","Line":""}
+    while True:
+        line = read.readline()
+        lin = lin + 1
+        if not line:
+            break
+        elif line.find(",") == -1 :
+            continue
+        koma = line.index(",")
+        name = line[:koma]
+        if name == nama :
+            no = line[koma + 1:]
+            data["Nama"] = nama;
+            data["NO"] = no;
+            data["Line"] = lin;
+            read.close()
+            return data
 
-phonebook()
+def addContact() :
+    nama = input("Masukkan Nama \t\t: ")
+    if isNameExist(nama) :
+        while(isNameExist(nama)) :
+            nama = input("Nama yang diinputkan sudah ada, harap masukkan kembali yang berbeda : ")
+    no = input("Masukkan No \t\t: ")
+    if(isNumberExist(no)) :
+        while(isNumberExist(no)) :
+            no = input("No Telepon yang dimasukkan sudah ada, harap masukkan kembali \t: ")
+    file = open("Phone.txt", "a")
+    file.write(nama + "," +  no + "\n")
+    file.close()
+
+def showList() :
+    print("Nama \t\t No Telepon\n")
+    read = open("Phone.txt", "r")
+    while True:
+        line = read.readline()
+        if not line:
+            break
+        elif line.find(",") == -1 :
+            continue
+        koma = line.index(",")
+        name = line[:koma]
+        no = line[koma + 1:]    
+        print(name + "\t\t" + no)
+    read.close()
+    os.system("pause")
+
+def updateContact() :
+    nama = input("Masukkan nama kontak yang ingin diubah :")
+    if isNameExist(nama) :
+        data = getContact(nama)
+        print("Nama \t: " + data["Nama"])
+        print("Kontak \t: " + data["NO"])
+        print("Masukkan -- pada bagian yang tidak ingin diubah")
+        updName = input("Masukkan Nama baru \t: ")
+        if isNameExist(updName) :
+            while(isNameExist(updName)) :
+                updName = input("Nama yang diinputkan sudah ada, harap masukkan kembali yang berbeda : ")
+        updNo = input("Masukkan No Baru \t: ")
+        if(isNumberExist(updNo)) :
+            while(isNumberExist(updNo)) :
+                updNo = input("No Telepon yang dimasukkan sudah ada, harap masukkan kembali \t: ")
+        newName = data["Nama"] if updName == "--" else updName
+        newNo = data["NO"] if updNo == "--" else updNo
+        with open('Phone.txt', 'r') as file:
+            pac = file.readlines()
+        pac[data["Line"] - 1] = real = newName + "," + newNo + "\n"
+        with open('Phone.txt', 'w') as file:
+            file.writelines(pac)
+    else :
+        print("Tidak ditemukan kontak '"+nama+"'")
+        os.system("pause")
+        
+def deleteContact() :
+    nama = input("Masukkan kontak yang ingin dihapus : ")
+    if isNameExist(nama) :
+        data = getContact(nama)
+        print("Nama \t: " + data["Nama"])
+        print("Kontak \t: " + data["NO"])
+        c = input("Yakin kontak ini akan dihapus ? \nKetik selain y/Y jika ingin dibatalkan : ")
+        if c == 'y' or c == 'Y' :
+            with open("Phone.txt", "r") as f:
+                lines = f.readlines()
+            with open("Phone.txt", "w") as f:
+                i = 0
+                for line in lines:
+                    i+=1
+                    if i != data["Line"]:
+                        f.write(line)
+    else :
+        print("Tidak ditemukan kontak '" + nama + "'")
+        os.system("pause")
+def searchContact() :
+    name = input("Masukkan nama kontak yang ingin dicari : ")
+    if isNameExist(name):
+        data = getContact(name)
+        print("Nama \t: " + data["Nama"])
+        print("Nomor \t: " + data["NO"])
+    else :
+        print("Nama tersebut tidak terdaftar")
+    os.system("pause")
+            
+choice = 1
+while (choice is not 0) :
+    os.system("cls")
+    print("="*30)
+    print(" "*10 + "PHONE BOOK")
+    print("="*30)
+    print("\n1.Lihat list Nomor Telephone")
+    print("\n2.Tambah Kontak")
+    print("\n3.Ubah Kontak")
+    print("\n4.Hapus Kontak")
+    print("\n5.Cari Kontak")
+    print("\n0.Keluar")
+    choice = int(input("\n\nMasukkan pilihan anda : "))
+    os.system("clear")
+    if choice is 1 :    
+        showList()
+    elif choice is 2 : 
+        addContact()
+    elif choice is 3 :
+        updateContact()
+    elif choice is 4 : 
+        deleteContact()
+    elif choice is 5 :
+        searchContact()
+    elif choice is 0 :
+        exit
+    else :
+        print("Maaf, inputan anda salah.\nHarap coba kembali")
+        os.system("pause")
