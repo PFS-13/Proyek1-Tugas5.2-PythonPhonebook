@@ -1,6 +1,5 @@
+#DEFINE MENU FUNCTION
 import os
-
-#DEFINE A MENU FUNCTION
 def menu():
     #ENTRY VARIABLE
     entry = int(input("""Selamat datang di Buku Kontak Raizenway.
@@ -66,7 +65,7 @@ def phonebook():
                     #tampilkan pesan berhasil
                     print('Kontak berhasil disimpan')
                     input("Tekan enter untuk kembali ke menu... ")
-                
+
             file.close()
 
         #CEK NOMOR
@@ -89,7 +88,7 @@ def phonebook():
                         print(lines[index], lines[index+1], sep='')
                         found = True
                         input("Tekan enter untuk kembali ke menu... ")
-                    
+
             if not found:
                 print('Kontak tidak ada')
                 input("Tekan enter untuk kembali ke menu... ")                  
@@ -121,7 +120,7 @@ def phonebook():
                                             if lines.index(line) != nomordihapus:
                                                 fw.write(line)
                             print("Deleted")
-                        
+
             if not found:
                 print("Kontak tidak ada")
 
@@ -170,9 +169,7 @@ def phonebook():
 
         elif entry == 6:
             print('Terima kasih telah menggunakan Buku Kontak Raizenway')
-            break
-
-        #Error
+            #Error
         else:
             print('Opsi salah!')
 
